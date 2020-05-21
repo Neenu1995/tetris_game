@@ -6,9 +6,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
     const GRID_WIDTH = 10;
 
     let nextRandom = 0;
-    //console.log(squares);
 
-    //the tetrominoes
+    let timerId;
+    
     //The Tetrominoes
   const lTetromino = [
     [1, GRID_WIDTH + 1, GRID_WIDTH * 2 + 1, 2],
@@ -75,7 +75,7 @@ function undraw(){
 
 //make tetromino move down every sec
 
-timerId = setInterval(moveDown,800);
+//timerId = setInterval(moveDown,800);
 
 //Assign keycodes to functions
 function control(e){
@@ -191,7 +191,19 @@ function displayShape(){
 
 //add function to button
 
+startBtn.addEventListener('click',()=>{
+if(timerId){
+    clearInterval(timerId)
+    timerId = null
+}
+else{
+    draw()
+    timerId = setInterval(moveDown,800);
+    nextRandom = Math.floor(Math.random()*theTetriminoes.length)
+    displayShape()
+}
 
+})
 
 
 
