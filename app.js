@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
   //random tetromino selection
   let random = Math.floor(Math.random()*theTetriminoes.length)
   console.log(random)
-  let current = theTetriminoes[0][0];
+  let current = theTetriminoes[random][currentRotation];
   
 
   //drw the first rotation of first tetromino
@@ -73,13 +73,44 @@ function undraw(){
 
 //make tetromino move down every sec
 
-timerId = setInterval(moveDown,1000);
+timerId = setInterval(moveDown,800);
+
+
 
 //movedown function
 
 function moveDown(){
+
     undraw();
     currentPosition+=GRID_WIDTH;
+    draw();
+    freeze();
+}
+
+function freeze(){
+    if(current.some(index=> squares[currentPosition+index+GRID_WIDTH].classList.contains('taken'))){
+        current.forEach(index=> squares[currentPosition+index].classList.add('taken'))
+        //start  a new tetromino falling
+        random = Math.floor(Math.random()*theTetriminoes.length);
+        current = theTetriminoes[random][currentRotation];
+        currentPosition = 4;
+        draw();
+        
+    }
+}
+
+//move tetromino left unless is at the edge or there is a blockage
+function moveLeft(){
+    undraw();
+    const isAtLeftEdge = current.some(index=> (currentPosition+index)%GRID_WIDTH===0);
+    if(!isAtLeftEdge){
+        currentPosition = -1;
+
+    }
+
+    if(current.some(index=> squares[currentPosition+index].classList.contains('taken'))){
+        currentPosition += 1;
+    }
     draw();
 }
 
