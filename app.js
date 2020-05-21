@@ -75,7 +75,24 @@ function undraw(){
 
 timerId = setInterval(moveDown,800);
 
+//Assign keycodes to functions
+function control(e){
+    if(e.keyCode === 37){
+        moveLeft();
+    }
+    else if(e.keyCode===38){
+        rotate();
+    }
+    else if(e.keyCode===39){
+        moveRight();
+    }
+    else if(e.keyCode===40){
+        moveDown();
+    }
+}
 
+//keydown speeds up the down movemnet
+document.addEventListener('keydown',control);
 
 //movedown function
 
@@ -104,7 +121,7 @@ function moveLeft(){
     undraw();
     const isAtLeftEdge = current.some(index=> (currentPosition+index)%GRID_WIDTH===0);
     if(!isAtLeftEdge){
-        currentPosition = -1;
+        currentPosition += -1;
 
     }
 
@@ -115,8 +132,30 @@ function moveLeft(){
 }
 
 
+function moveRight(){
+    undraw();
+    const isAtLeftEdge = current.some(index=> (currentPosition+index)%GRID_WIDTH=== GRID_WIDTH-1);
+    if(!isAtLeftEdge){
+        currentPosition += +1;
 
+    }
 
+    if(current.some(index=> squares[currentPosition+index].classList.contains('taken'))){
+        currentPosition -= 1;
+    }
+    draw();
+}
+
+//rotate tromino
+function rotate(){
+    undraw();
+    currentRotation++;
+    if(currentRotation === current.length){
+        currentRotation = 0;
+    }
+    current = theTetriminoes[random][currentRotation];
+    draw();
+}
 
 
 
